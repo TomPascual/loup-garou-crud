@@ -1,0 +1,78 @@
+/* Global background for the body */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #1a1a1a; /* Un fond sombre similaire au jeu */
+    color: #e0e0e0; /* Texte clair */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.form-container {
+    background-color: #420c0b; /* Couleur principale inspirée de la boîte du jeu */
+    padding: 30px;
+    border-radius: 15px;
+    width: 350px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.7); /* Ombre pour un effet de profondeur */
+    text-align: center;
+}
+
+h1 {
+    color: #f4c542; /* Une couleur dorée inspirée des tons chauds de la boîte */
+    font-size: 2em;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+label {
+    color: #ffefc1; /* Couleur plus claire pour les labels */
+    display: block;
+    margin-bottom: 8px;
+    text-align: left;
+}
+
+.form-input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    background-color: #2b2b2b; /* Un fond gris foncé pour les champs */
+    color: #fff; /* Texte blanc pour les inputs */
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #f4c542; /* Mettre en évidence les inputs lorsqu'ils sont actifs */
+}
+
+.btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #f76a20; /* Un orange vif pour les boutons, similaire à l'illustration */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    text-transform: uppercase;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #c6530d; /* Fonce la couleur au survol */
+}
+
+.form-container a {
+    color: #f4c542; /* Liens dorés */
+    text-decoration: none;
+}
+
+.form-container a:hover {
+    text-decoration: underline;
+}

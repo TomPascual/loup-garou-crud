@@ -1,0 +1,27 @@
+# Ignorer le dossier vendor (dépendances PHP)
+vendor/
+
+# Ignorer les fichiers et dossiers de logs
+logs/
+storage/
+*.log
+
+# Ignorer les fichiers d'environnement (variables secrètes)
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+
+# Ignorer les fichiers de cache de Composer
+composer.phar
+composer.lock
+
+# Ignorer les fichiers de l'IDE (VS Code, PHPStorm, etc.)
+.vscode/
+.idea/
+*.sublime-workspace
+
+# Ignorer les fichiers système (Windows et Mac)
+.DS_Store
+Thumbs.db

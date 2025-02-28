@@ -1,0 +1,208 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #2b1d0e;
+    color: #f0e6d6;
+}
+
+h1, h2, h3 {
+    color: #f0e6d6;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.compositions-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.composition {
+    background-color: #1c1c1c;
+    padding: 15px;
+    border: 1px solid #8b0000;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    width: 300px;
+    min-height: 550px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.composition p {
+    white-space: normal; /* Permet le retour à la ligne */
+    overflow-wrap: break-word; /* Coupe les mots longs s'ils dépassent la largeur */
+    word-wrap: break-word; /* Compatibilité avec d'anciens navigateurs */
+    max-height: 80px; /* Hauteur maximale pour garder une limite si nécessaire */
+    overflow: hidden; /* Masque le texte qui dépasse la hauteur */
+}
+
+
+
+.composition:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 0px 15px #d4af37;
+}
+
+.cartes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.carte-item {
+    position: relative;
+    display: inline-block;
+    margin: 10px;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.carte-image {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.carte-item.active {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    width: 150px;
+    height: 150px;
+    transition: transform 0.3s ease, width 0.3s ease, height 0.3s ease;
+}
+
+.cards-container.blur {
+    filter: blur(5px);
+}
+
+#description-display {
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -20%);
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    color: #fff;
+    z-index: 1001;
+    display: none;
+}
+
+#close-button {
+    background-color: red;
+    color: #fff;
+    padding: 10px;
+    margin-top: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+.carte-quantity {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.8em;
+    color: red;
+    font-weight: bold;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 15px;
+    margin: 10px 0;
+    background-color: #8b0000;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #d4af37;
+}
+
+.btn-frame, .btn-liked {
+    display: inline-block;
+    padding: 15px 20px;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-liked {
+    background-color: green;
+}
+
+.btn-frame {
+    background-color: rgb(163, 0, 0);
+}
+
+.uniform-size {
+    width: 300px;
+    min-height: 550px;
+    overflow: visible;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.like-button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.error {
+    color: #ff6b6b;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* Pour surligner en vert les cartes sélectionnées */
+.filter-card.selected .carte-image {
+    border: 3px solid #28a745;
+    box-shadow: 0px 0px 10px #28a745;
+    transform: scale(1.1);
+}
+/* Cartes de composition non cliquables */
+.composition-carte {
+    pointer-events: none;
+}
+
+#carte-nom-affichage {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.9);
+    color: #f0e6d6;
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 1.5em;
+    font-weight: bold;
+    text-align: center;
+    z-index: 1000;
+}
