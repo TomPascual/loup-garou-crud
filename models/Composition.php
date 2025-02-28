@@ -11,17 +11,13 @@ class Composition
     /**
      * @var PDO $pdo Instance de la connexion à la base de données.
      */
-    private $pdo;
+    private PDO $pdo;
 
-    /**
-     * Constructeur de la classe Composition.
-     * 
-     * @param PDO $pdo Instance de PDO pour la connexion à la base de données.
-     */
-    public function __construct($pdo)
-    {
+    public function __construct(PDO $pdo) {
         $this->pdo = $pdo;
     }
+
+
 
     /**
      * Récupère toutes les compositions avec le nombre de "likes".

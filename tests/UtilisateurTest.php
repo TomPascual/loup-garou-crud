@@ -1,6 +1,9 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
+require_once __DIR__ . '/../config/Database.php';
+$pdo = Database::getInstance()->getConnection();
+
 require_once __DIR__ . '/../models/Utilisateur.php';
 class UtilisateurTest extends TestCase
 {

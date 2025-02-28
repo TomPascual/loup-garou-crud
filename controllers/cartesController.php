@@ -1,7 +1,9 @@
 <?php
 // controllers/cartesController.php
 
-require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/../config/Database.php';
+$pdo = Database::getInstance()->getConnection();
+
 require_once __DIR__ . '/../models/Carte.php';
 
 // Instance du modèle Carte pour gérer les actions liées aux cartes

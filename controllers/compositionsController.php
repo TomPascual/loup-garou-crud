@@ -1,7 +1,9 @@
 <?php
 // controllers/compositionsController.php
 
-require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/../config/Database.php';
+$pdo = Database::getInstance()->getConnection();
+
 require_once __DIR__ . '/../models/Composition.php';
 require_once __DIR__ . '/../models/Carte.php';
 require_once __DIR__ . '/../models/Utilisateur.php';

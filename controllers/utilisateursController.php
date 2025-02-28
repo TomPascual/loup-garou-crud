@@ -1,7 +1,9 @@
 <?php
 // controllers/utilisateursController.php
 
-require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/../config/Database.php';
+$pdo = Database::getInstance()->getConnection();
+
 require_once __DIR__ . '/../models/Utilisateur.php';
 
 // Démarre une session si elle n'est pas déjà active

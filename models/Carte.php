@@ -11,15 +11,10 @@ class Carte
     /**
      * @var PDO $pdo Instance de la connexion à la base de données.
      */
-    private $pdo;
+    private PDO $pdo;
 
-    /**
-     * Constructeur de la classe Carte.
-     * 
-     * @param PDO $pdo Instance de PDO pour la connexion à la base de données.
-     */
-    public function __construct($pdo)
-    {
+
+    public function __construct(PDO $pdo) {
         $this->pdo = $pdo;
     }
 
