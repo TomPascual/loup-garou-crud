@@ -2,23 +2,19 @@
 
 use PHPUnit\Framework\TestCase;
 require_once __DIR__ . '/../config/Database.php';
-$pdo = Database::getInstance()->getConnection();
-
 require_once __DIR__ . '/../models/Composition.php';
+
 class CompositionTest extends TestCase
 {
-    // Test de la création d'une nouvelle composition
     public function testCreateComposition()
     {
-        // Mocker PDO pour simuler la connexion à la base de données
+        // Mocker PDO
         $pdo = $this->createMock(PDO::class);
-
-        // Simuler l'objet PDOStatement
         $stmt = $this->createMock(PDOStatement::class);
-        $pdo->method('prepare')->willReturn($stmt);
 
-        // Simuler le succès de l'exécution
+        $pdo->method('prepare')->willReturn($stmt);
         $stmt->method('execute')->willReturn(true);
+        $pdo->method('lastInsertId')->willReturn(1); // Simuler un ID inséré
 
         // Créer une instance de Composition
         $composition = new Composition($pdo);
@@ -27,7 +23,7 @@ class CompositionTest extends TestCase
         $nom = 'Nouvelle Composition';
         $description = 'Description test';
         $nombre_joueurs = 5;
-        $cartes = ['carte1', 'carte2'];
+        $cartes = [1, 2]; // Utiliser des IDs valides
         $utilisateur_id = 1;
 
         // Tester la méthode createComposition
@@ -37,59 +33,42 @@ class CompositionTest extends TestCase
         $this->assertTrue($resultat);
     }
 
-    // Test du filtre des compositions par cartes et nombre de joueurs
     public function testFilterByCardsAndPlayers()
     {
-        // Mocker PDO
         $pdo = $this->createMock(PDO::class);
-
-        // Simuler PDOStatement
         $stmt = $this->createMock(PDOStatement::class);
-        $pdo->method('prepare')->willReturn($stmt);
 
-        // Simuler le retour des résultats
+        $pdo->method('prepare')->willReturn($stmt);
         $stmt->method('fetchAll')->willReturn([
             ['id' => 1, 'nom' => 'Test Composition', 'nombre_joueurs' => 5]
         ]);
 
-        // Créer une instance de Composition
         $composition = new Composition($pdo);
 
-        // Tester avec des cartes spécifiques et un nombre de joueurs
         $cardIds = [1, 2];
         $nombre_joueurs = 5;
 
-        // Appeler la méthode et récupérer le résultat
         $resultat = $composition->filterByCardsAndPlayers($cardIds, $nombre_joueurs);
 
-        // Vérifier que le nombre de résultats est correct
         $this->assertCount(1, $resultat);
         $this->assertEquals('Test Composition', $resultat[0]['nom']);
     }
 
-    // Test pour vérifier si un utilisateur est l'auteur d'une composition
     public function testIsAuthor()
     {
-        // Mocker PDO
         $pdo = $this->createMock(PDO::class);
-
-        // Simuler PDOStatement
         $stmt = $this->createMock(PDOStatement::class);
-        $pdo->method('prepare')->willReturn($stmt);
 
-        // Simuler le retour des résultats
+        $pdo->method('prepare')->willReturn($stmt);
         $stmt->method('fetch')->willReturn(['utilisateur_id' => 1]);
 
-        // Créer une instance de Composition
         $composition = new Composition($pdo);
 
-        // Tester si l'utilisateur est l'auteur
         $userId = 1;
         $compositionId = 1;
 
         $resultat = $composition->isAuthor($userId, $compositionId);
 
-        // Vérifier que le résultat est vrai
         $this->assertTrue($resultat);
     }
 }
