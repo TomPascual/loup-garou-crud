@@ -70,22 +70,29 @@ class CompositionsController {
     }
 
     public function edit(int $id, array $data) {
-        if ($_SESSION['role'] !== 'admin') {
+        if (!isset($_SESSION['user_id'])) {
             die("Erreur : Accès interdit.");
         }
     
+        // Vérifier que toutes les données nécessaires sont présentes
+        if (empty($data['nom']) || empty($data['description']) || empty($data['nombre_joueurs']) || empty($data['cartes'])) {
+            die("Erreur : Tous les champs sont requis.");
+        }
+    
+        // Récupérer les valeurs du formulaire
         $nom = $data['nom'];
         $description = $data['description'];
         $nombre_joueurs = $data['nombre_joueurs'];
-        $cartes = $data['cartes']; // Vérifie si ce champ est bien transmis dans le formulaire
+        $cartes = $data['cartes'];
     
+        // Appeler la mise à jour dans le modèle
         $result = $this->compositionModel->updateComposition($id, $nom, $description, $nombre_joueurs, $cartes);
     
         if ($result) {
             header('Location: /loup-garou-crud/public/index.php');
             exit;
         } else {
-            die("Erreur : Échec de la mise à jour de la composition.");
+            die("Erreur : La modification de la composition a échoué.");
         }
     }
     
@@ -108,5 +115,9 @@ class CompositionsController {
     public function getCompositionById(int $id) {
         return $this->compositionModel->getCompositionById($id);
     }
+    public function getAllCartes() {
+        return $this->carteModel->getAllCartes();
+    }
+    
 }
 ?>

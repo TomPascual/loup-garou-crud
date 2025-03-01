@@ -34,12 +34,17 @@ class Carte
      * @param int $id Identifiant de la carte.
      * @return array|false Retourne un tableau associatif contenant les informations de la carte, ou false si non trouvé.
      */
-    public function getCarteById($id)
-    {
-        $stmt = $this->pdo->prepare('SELECT * FROM cartes WHERE id = ?');
-        $stmt->execute([$id]);
+    public function getCarteById($id) {
+        if (!$this->pdo) {
+            die("Erreur : connexion à la base de données non disponible.");
+        }
+    
+        $query = "SELECT * FROM cartes WHERE id = :id";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute(['id' => $id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+    
     
     /**
      * Crée une nouvelle carte.

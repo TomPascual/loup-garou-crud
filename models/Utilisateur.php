@@ -37,11 +37,29 @@ class Utilisateur {
      * @param string $role (optionnel) Le rôle de l'utilisateur, par défaut 'user'.
      * @return bool Retourne true si l'inscription a réussi, sinon false.
      */
-    public function registerUser($pseudo, $email, $password, $role = 'user') {
-        $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-        $stmt = $this->pdo->prepare("INSERT INTO utilisateurs (pseudo, email, password, role) VALUES (?, ?, ?, ?)");
-        return $stmt->execute([$pseudo, $email, $hashedPassword, $role]);
+    public function registerUser($pseudo, $email, $password, $role = 'utilisateur'): bool {
+        try {
+            // Vérifie si l'email existe déjà
+            if ($this->emailExists($email)) {
+                return false; // Empêche la duplication d'email
+            }
+    
+            // Hash du mot de passe (PASSWORD_DEFAULT recommandé pour les mises à jour futures)
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+    
+            // Insère l'utilisateur avec le rôle par défaut
+            $stmt = $this->pdo->prepare("INSERT INTO utilisateurs (pseudo, email, password, role) VALUES (?, ?, ?, ?)");
+            
+            return $stmt->execute([$pseudo, $email, $hashedPassword, $role]);
+        } catch (PDOException $e) {
+            // Capture les erreurs SQL et log l'erreur au lieu de planter l'application
+            error_log("Erreur lors de l'inscription: " . $e->getMessage());
+            return false;
+        }
     }
+    
+    
+    
 
     /**
      * Vérifie si un utilisateur est administrateur.
@@ -73,4 +91,10 @@ class Utilisateur {
         }
         return false;
     }
+    public function emailExists($email) {
+        $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM utilisateurs WHERE email = ?");
+        $stmt->execute([$email]);
+        return $stmt->fetchColumn() > 0;
+    }
+    
 }

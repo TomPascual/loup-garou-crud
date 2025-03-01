@@ -1,3 +1,13 @@
+<?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
+$error = $_SESSION['register_error'] ?? null;
+$oldData = $_SESSION['register_data'] ?? [];
+unset($_SESSION['register_error'], $_SESSION['register_data']);
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -10,6 +20,10 @@
     <!-- Conteneur du formulaire d'inscription -->
     <div class="form-container">
         <h1>Inscription</h1>
+        <?php if ($error): ?>
+            <p style="color: red;"><?= htmlspecialchars($error) ?></p>
+        <?php endif; ?>
+
         <!-- Formulaire d'inscription, utilisant la méthode POST pour envoyer les informations -->
         <form method="POST" action="/loup-garou-crud/public/index.php?action=register">
             <!-- Champ pour entrer le pseudo -->

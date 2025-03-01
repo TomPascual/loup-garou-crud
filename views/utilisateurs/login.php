@@ -1,3 +1,14 @@
+
+<?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
+$error = $_SESSION['login_error'] ?? null;
+unset($_SESSION['login_error']);
+?>
+
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -10,6 +21,10 @@
     <!-- Conteneur du formulaire de connexion -->
     <div class="form-container">
         <h1>Connexion</h1>
+        <?php if ($error): ?>
+            <p style="color: red;"><?= htmlspecialchars($error) ?></p>
+        <?php endif; ?>
+
         <!-- Formulaire de connexion, utilisant la méthode POST pour envoyer les informations d'identification -->
         <form method="POST" action="/loup-garou-crud/public/index.php?action=login">
             <!-- Champ pour entrer le pseudo ou l'email -->

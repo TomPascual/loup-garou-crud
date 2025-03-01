@@ -27,7 +27,8 @@
 <h1>Créer une Nouvelle Composition</h1>
 
 <!-- Formulaire pour créer une nouvelle composition -->
-<form method="POST" action="?action=create">
+<form method="POST" action="/loup-garou-crud/public/index.php?action=create_composition">
+
     <label for="nom">Nom de la Composition:</label>
     <!-- Champ pour le nom de la composition -->
     <input type="text" name="nom" required><br>

@@ -7,8 +7,6 @@ class Composition {
         $this->pdo = $pdo;
     }
 
-
-
     public function createComposition($nom, $description, $nombre_joueurs, $cartes, $utilisateur_id) {
         $cartes_json = json_encode($cartes);
         $stmt = $this->pdo->prepare("INSERT INTO compositions (nom, description, nombre_joueurs, cartes, utilisateur_id) VALUES (?, ?, ?, ?, ?)");
@@ -22,9 +20,19 @@ class Composition {
     }
 
     public function updateComposition($id, $nom, $description, $nombre_joueurs, $cartes) {
-        $cartes_json = json_encode($cartes);
-        $stmt = $this->pdo->prepare("UPDATE compositions SET nom = ?, description = ?, nombre_joueurs = ?, cartes = ? WHERE id = ?");
-        return $stmt->execute([$nom, $description, $nombre_joueurs, $cartes_json, $id]);
+        $cartes_json = json_encode($cartes); // Convertir les cartes en JSON
+    
+        $stmt = $this->pdo->prepare("UPDATE compositions 
+                                    SET nom = ?, description = ?, nombre_joueurs = ?, cartes = ? 
+                                    WHERE id = ?");
+        $result = $stmt->execute([$nom, $description, $nombre_joueurs, $cartes_json, $id]);
+    
+        if (!$result) {
+            var_dump($stmt->errorInfo()); // Affiche l'erreur SQL en cas de problème
+            exit;
+        }
+    
+        return $result;
     }
     
 
@@ -70,17 +78,53 @@ class Composition {
     }
     public function getTopLikedCompositions() {
         $query = "SELECT c.*, 
+                         u.pseudo AS utilisateur, 
                          (SELECT COUNT(*) FROM likes WHERE composition_id = c.id) AS likes
-                  FROM compositions c 
+                  FROM compositions c
+                  JOIN utilisateurs u ON c.utilisateur_id = u.id
                   ORDER BY likes DESC 
                   LIMIT 5";
+    
         $stmt = $this->pdo->query($query);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     
+    
     public function getCompositionsAlphabetical() {
-        $stmt = $this->pdo->query("SELECT * FROM compositions ORDER BY nom ASC");
+        $query = "SELECT compositions.*, 
+                         utilisateurs.pseudo AS utilisateur, 
+                         (SELECT COUNT(*) FROM likes WHERE likes.composition_id = compositions.id) AS likes
+                  FROM compositions
+                  JOIN utilisateurs ON compositions.utilisateur_id = utilisateurs.id
+                  ORDER BY compositions.nom ASC";
+        $stmt = $this->pdo->query($query);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+    public function hasUserLiked($compositionId, $userId) {
+        if (!$userId) return false; // Si l'utilisateur n'est pas connecté
+    
+        $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM likes WHERE composition_id = ? AND user_id = ?");
+        $stmt->execute([$compositionId, $userId]);
+        return $stmt->fetchColumn() > 0;
+    }
+    
+    
+    public function toggleLike($compositionId, $userId) {
+        // Vérifie si l'utilisateur a déjà liké la composition
+        $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM likes WHERE composition_id = ? AND user_id = ?");
+        $stmt->execute([$compositionId, $userId]);
+        $hasLiked = $stmt->fetchColumn() > 0;
+    
+        if ($hasLiked) {
+            // Si déjà liké, on supprime le like
+            $stmt = $this->pdo->prepare("DELETE FROM likes WHERE composition_id = ? AND user_id = ?");
+            $stmt->execute([$compositionId, $userId]);
+        } else {
+            // Sinon, on ajoute un like
+            $stmt = $this->pdo->prepare("INSERT INTO likes (composition_id, user_id) VALUES (?, ?)");
+            $stmt->execute([$compositionId, $userId]);
+        }
     }
     
     

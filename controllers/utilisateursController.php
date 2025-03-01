@@ -13,55 +13,56 @@ class UtilisateursController {
     }
 
     public function login(array $data) {
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            include '../views/utilisateurs/login.php';
-            return;
-        }
-
         $identifiant = $data['identifiant'];
         $password = $data['password'];
         $utilisateur = $this->utilisateurModel->getUtilisateurByPseudoOrEmail($identifiant);
-
-        if ($utilisateur && password_verify($password, $utilisateur['password'])) {
-            $_SESSION['user_id'] = $utilisateur['id'];
-            $_SESSION['pseudo'] = $utilisateur['pseudo'];
-            $_SESSION['role'] = $utilisateur['role'];
-
-            if ($utilisateur['role'] === 'admin') {
-                header('Location: /loup-garou-crud/public/index.php?action=admin');
-            } else {
-                header('Location: /loup-garou-crud/public/index.php');
-            }
-            exit;
-        } else {
-            die("Erreur : Identifiants incorrects.");
+    
+        if (!$utilisateur || !password_verify($password, $utilisateur['password'])) {
+            $_SESSION['login_error'] = "Identifiants incorrects.";
+            header("Location: /loup-garou-crud/public/index.php?action=login");
+            exit();
         }
+    
+        // Connexion réussie : on stocke bien le rôle
+        $_SESSION['user_id'] = $utilisateur['id'];
+        $_SESSION['pseudo'] = $utilisateur['pseudo'];
+        $_SESSION['role'] = $utilisateur['role']; // 🔥 Assure que le rôle est stocké
+    
+        header("Location: /loup-garou-crud/public/index.php");
+        exit();
     }
+    
 
-    public function register(array $data) {
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            include '../views/utilisateurs/register.php';
-            return;
+    public function register($data) {
+        if (empty($data['pseudo']) || empty($data['email']) || empty($data['password'])) {
+            $_SESSION['register_error'] = "Tous les champs sont requis.";
+            $_SESSION['register_data'] = $data;
+            header("Location: /loup-garou-crud/public/index.php?action=register");
+            exit();
         }
-
-        $pseudo = $data['pseudo'];
-        $email = $data['email'];
-        $password = $data['password'];
-        $role = $data['role'] ?? 'user';
-
-        if (empty($pseudo) || empty($email) || empty($password)) {
-            die("Erreur : Tous les champs sont requis.");
+    
+        // Hachage du mot de passe pour la sécurité
+        $hashedPassword = password_hash($data['password'], PASSWORD_DEFAULT);
+    
+        // Rôle par défaut "utilisateur"
+        $role = 'utilisateur';
+    
+        // Enregistrement de l'utilisateur
+        $success = $this->utilisateurModel->registerUser($data['pseudo'], $data['email'], $hashedPassword, $role);
+    
+        if (!$success) {
+            $_SESSION['register_error'] = "Cet email est déjà utilisé ou une erreur est survenue.";
+            $_SESSION['register_data'] = $data;
+            header("Location: /loup-garou-crud/public/index.php?action=register");
+            exit();
         }
-
-        $result = $this->utilisateurModel->registerUser($pseudo, $email, $password, $role);
-
-        if ($result) {
-            header('Location: /loup-garou-crud/public/index.php?action=login');
-            exit;
-        } else {
-            die("Erreur : Échec de l'inscription.");
-        }
+    
+        $_SESSION['register_success'] = "Inscription réussie. Vous pouvez maintenant vous connecter.";
+        header("Location: /loup-garou-crud/public/index.php?action=login");
+        exit();
     }
+    
+    
 
     public function logout() {
         session_destroy();
