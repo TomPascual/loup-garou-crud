@@ -16,8 +16,31 @@ class CompositionsController {
     }
 
     public function index() {
-        return $this->compositionModel->getAllCompositions();
+        // Récupérer les compositions populaires
+        $topLikedCompositions = $this->compositionModel->getTopLikedCompositions();
+        // Récupérer les cartes disponibles
+        $cartesDisponibles = $this->carteModel->getAllCartes();
+        // Récupérer les compositions triées par ordre alphabétique
+        $compositionsAlphabetical = $this->compositionModel->getCompositionsAlphabetical();
+    
+        // S'assurer que ces variables ne sont pas vides ou nulles avant de les envoyer à la vue
+        if (!$topLikedCompositions) {
+            $topLikedCompositions = [];
+        }
+    
+        if (!$cartesDisponibles) {
+            $cartesDisponibles = [];
+        }
+    
+        if (!$compositionsAlphabetical) {
+            $compositionsAlphabetical = [];
+        }
+    
+        // Passer les variables à la vue
+        return compact('topLikedCompositions', 'cartesDisponibles', 'compositionsAlphabetical');
     }
+    
+    
 
     public function create(array $data) {
         if (!isset($_SESSION['user_id'])) {

@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="/loup-garou-crud/public/css/cartes.css">
 </head>
 <body>
+
 <header>
     <nav>
         <!-- Liens de navigation -->

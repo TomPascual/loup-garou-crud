@@ -7,10 +7,7 @@ class Composition {
         $this->pdo = $pdo;
     }
 
-    public function getAllCompositions() {
-        $stmt = $this->pdo->query("SELECT * FROM compositions");
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
+
 
     public function createComposition($nom, $description, $nombre_joueurs, $cartes, $utilisateur_id) {
         $cartes_json = json_encode($cartes);
@@ -55,5 +52,38 @@ class Composition {
         
         return $composition && $composition['utilisateur_id'] == $userId;
     }
+    public function getAllCompositions($search = '') {
+        $query = 'SELECT c.*, u.pseudo AS utilisateur, 
+                  (SELECT COUNT(*) FROM likes ld WHERE ld.composition_id = c.id AND ld.type = "like") AS likes
+                  FROM compositions c
+                  JOIN utilisateurs u ON c.utilisateur_id = u.id';
+    
+        if ($search) {
+            $query .= ' WHERE c.nom LIKE :search';
+            $stmt = $this->pdo->prepare($query);
+            $stmt->execute(['search' => '%' . $search . '%']);
+        } else {
+            $stmt = $this->pdo->query($query);
+        }
+    
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    public function getTopLikedCompositions() {
+        $query = "SELECT c.*, 
+                         (SELECT COUNT(*) FROM likes WHERE composition_id = c.id) AS likes
+                  FROM compositions c 
+                  ORDER BY likes DESC 
+                  LIMIT 5";
+        $stmt = $this->pdo->query($query);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+    public function getCompositionsAlphabetical() {
+        $stmt = $this->pdo->query("SELECT * FROM compositions ORDER BY nom ASC");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+    
+    
 }
 ?>

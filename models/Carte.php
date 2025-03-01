@@ -23,12 +23,11 @@ class Carte
      * 
      * @return array Retourne un tableau associatif contenant toutes les cartes.
      */
-    public function getAllCartes()
-    {
-        $stmt = $this->pdo->query('SELECT * FROM cartes');
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    public function getAllCartes() {
+        $stmt = $this->pdo->query("SELECT * FROM cartes"); // Exécution de la requête pour récupérer toutes les cartes
+        return $stmt->fetchAll(PDO::FETCH_ASSOC); // Retourne les résultats sous forme de tableau associatif
     }
-
+    
     /**
      * Récupère une carte par son identifiant.
      * 
@@ -84,4 +83,7 @@ class Carte
         $stmt = $this->pdo->prepare('DELETE FROM cartes WHERE id = ?');
         return $stmt->execute([$id]);
     }
+
+    
+    
 }

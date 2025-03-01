@@ -16,7 +16,6 @@ $action = $_GET['action'] ?? '';
 switch ($action) {
     case 'cartes':
         $cartes = $cartesController->index();
-        include '../views/cartes/index.php';
         break;
 
     case 'create_carte':
@@ -84,10 +83,19 @@ switch ($action) {
     case 'logout':
         $utilisateursController->logout();
         break;
+ 
+    case 'compositions':
+    $data = $compositionsController->index();
+    extract($data); // Récupère les variables $cartesDisponibles, $topLikedCompositions...
+    include '../views/compositions/index.php';
+    break;
+   
 
     default:
-        $compositions = $compositionsController->index();
-        include '../views/compositions/index.php';
+    $data = $compositionsController->index(); // Récupère les données
+    extract($data); // Transforme le tableau compact() en variables
+    include '../views/compositions/index.php';
+    
         break;
 }
 ?>
