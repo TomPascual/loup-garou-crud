@@ -26,8 +26,16 @@ SET time_zone = "+00:00";
 --
 -- Structure de la table `cartes`
 --
+SET FOREIGN_KEY_CHECKS = 0;
 
+DROP TABLE IF EXISTS `likes`;
+DROP TABLE IF EXISTS `compositions`;
 DROP TABLE IF EXISTS `cartes`;
+DROP TABLE IF EXISTS `utilisateurs`;
+
+SET FOREIGN_KEY_CHECKS = 1;
+
+
 CREATE TABLE IF NOT EXISTS `cartes` (
   `id` int NOT NULL AUTO_INCREMENT,
   `nom` varchar(100) NOT NULL,
@@ -36,6 +44,60 @@ CREATE TABLE IF NOT EXISTS `cartes` (
   `categorie` enum('villageois','neutre','loup') NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `likes`
+--
+
+
+CREATE TABLE IF NOT EXISTS `likes` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `composition_id` int DEFAULT NULL,
+  `user_id` int DEFAULT NULL,
+  `type` enum('like','dislike') NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `composition_id` (`composition_id`),
+  KEY `user_id` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+-- --------------------------------------------------------
+--
+-- Structure de la table `compositions`
+--
+
+
+
+CREATE TABLE IF NOT EXISTS `compositions` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nom` varchar(100) NOT NULL,
+  `description` text,
+  `nombre_joueurs` int NOT NULL,
+  `utilisateur_id` int DEFAULT NULL,
+  `cartes` json DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `utilisateur_id` (`utilisateur_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+
+-- --------------------------------------------------------
+--
+-- Structure de la table `utilisateurs`
+--
+
+
+CREATE TABLE IF NOT EXISTS `utilisateurs` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `pseudo` varchar(50) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `role` enum('admin','utilisateur') DEFAULT 'utilisateur',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
 
 --
 -- Déchargement des données de la table `cartes`
@@ -76,63 +138,17 @@ INSERT INTO `cartes` (`id`, `nom`, `description`, `photo`, `categorie`) VALUES
 
 -- --------------------------------------------------------
 
---
--- Structure de la table `compositions`
---
-
-DROP TABLE IF EXISTS `compositions`;
-CREATE TABLE IF NOT EXISTS `compositions` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `nom` varchar(100) NOT NULL,
-  `description` text,
-  `nombre_joueurs` int NOT NULL,
-  `utilisateur_id` int DEFAULT NULL,
-  `cartes` json DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `utilisateur_id` (`utilisateur_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
 
 --
--- Structure de la table `likes`
+-- Déchargement des données de la table `utilisateurs` root/azerty
 --
 
-DROP TABLE IF EXISTS `likes`;
-CREATE TABLE IF NOT EXISTS `likes` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `composition_id` int DEFAULT NULL,
-  `user_id` int DEFAULT NULL,
-  `type` enum('like','dislike') NOT NULL,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  KEY `composition_id` (`composition_id`),
-  KEY `user_id` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+INSERT INTO utilisateurs (pseudo, email, password, role) VALUES
+('root', 'root@admin.com', '$2b$12$f1z8NcIixxLDbbnH/gVfNuTOdLuc3eIvVXZAHdu7Lf1MTqpnsrCV2', 'admin'),
+('user', 'user@demo.com', '$2b$12$f1z8NcIixxLDbbnH/gVfNuTOdLuc3eIvVXZAHdu7Lf1MTqpnsrCV2', 'utilisateur');
 
--- --------------------------------------------------------
 
---
--- Structure de la table `utilisateurs`
---
 
-DROP TABLE IF EXISTS `utilisateurs`;
-CREATE TABLE IF NOT EXISTS `utilisateurs` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `pseudo` varchar(50) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `role` enum('admin','utilisateur') DEFAULT 'utilisateur',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Déchargement des données de la table `utilisateurs`
---
-
-INSERT INTO `utilisateurs` (`id`, `pseudo`, `email`, `password`, `role`) VALUES
-(3, 'admin', 'tom.pascual@aftec.org', '$2y$10$7MhtzTetzork7zJ5GvHjquVY57Orc1Vx.UTb3Sn/WxyYoeKqvg4p6', 'admin');
 
 --
 -- Contraintes pour les tables déchargées
