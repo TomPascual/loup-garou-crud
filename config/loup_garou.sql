@@ -22,10 +22,17 @@ SET time_zone = "+00:00";
 --
 
 -- --------------------------------------------------------
+DROP loup_garou;
+-- Création de la base de données si elle n'existe pas
+CREATE DATABASE IF NOT EXISTS loup_garou CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE loup_garou;
+
 
 --
 -- Structure de la table `cartes`
 --
+
+
 SET FOREIGN_KEY_CHECKS = 0;
 
 DROP TABLE IF EXISTS `likes`;
