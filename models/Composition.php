@@ -3,11 +3,19 @@
 class Composition {
     private PDO $pdo;
 
+
+    private function validateComposition($nom, $description)
+{
+    if (strlen($description) < 5) {
+        throw new Exception("La description doit contenir au moins 5 caractères.");
+    }
+}
     public function __construct(PDO $pdo) {
         $this->pdo = $pdo;
     }
 
     public function createComposition($nom, $description, $nombre_joueurs, $cartes, $utilisateur_id) {
+        $this->validateComposition($nom, $description);
         $cartes_json = json_encode($cartes);
         $stmt = $this->pdo->prepare("INSERT INTO compositions (nom, description, nombre_joueurs, cartes, utilisateur_id) VALUES (?, ?, ?, ?, ?)");
         return $stmt->execute([$nom, $description, $nombre_joueurs, $cartes_json, $utilisateur_id]);
@@ -21,6 +29,7 @@ class Composition {
 
     public function updateComposition($id, $nom, $description, $nombre_joueurs, $cartes) {
         $cartes_json = json_encode($cartes); // Convertir les cartes en JSON
+        $this->validateComposition($nom, $description);
     
         $stmt = $this->pdo->prepare("UPDATE compositions 
                                     SET nom = ?, description = ?, nombre_joueurs = ?, cartes = ? 

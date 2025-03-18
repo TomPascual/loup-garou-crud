@@ -14,7 +14,7 @@ class CompositionTest extends TestCase
 
         $pdo->method('prepare')->willReturn($stmt);
         $stmt->method('execute')->willReturn(true);
-        $pdo->method('lastInsertId')->willReturn(1); // Simuler un ID inséré
+        $pdo->method('lastInsertId')->willReturn("1");
 
         // Créer une instance de Composition
         $composition = new Composition($pdo);
@@ -71,4 +71,31 @@ class CompositionTest extends TestCase
 
         $this->assertTrue($resultat);
     }
+    public function testDescriptionAvecMoinsDe5Caracteres()
+{
+    $this->expectException(Exception::class);
+    $this->expectExceptionMessage("La description doit contenir au moins 5 caractères.");
+
+    $pdo = $this->createMock(PDO::class);
+    $composition = new Composition($pdo);
+
+    $composition->createComposition("Nom valide", "abc", 5, [1, 2], 1);
+}
+
+public function testDescriptionAvec5Caracteres()
+{
+    $pdo = $this->createMock(PDO::class);
+    $stmt = $this->createMock(PDOStatement::class);
+
+    $pdo->method('prepare')->willReturn($stmt);
+    $stmt->method('execute')->willReturn(true);
+    $pdo->method('lastInsertId')->willReturn("1");
+
+    $composition = new Composition($pdo);
+
+    $resultat = $composition->createComposition("Nom valide", "abcde", 5, [1, 2], 1);
+
+    $this->assertTrue($resultat);
+}
+
 }

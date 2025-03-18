@@ -13,9 +13,15 @@ class Carte
      */
     private PDO $pdo;
 
-
+    private function validateCarte($nom, $description)
+{
+    if (strlen($description) < 5) {
+        throw new Exception("La description doit contenir au moins 5 caractères.");
+    }
+}
     public function __construct(PDO $pdo) {
         $this->pdo = $pdo;
+        $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 
     /**
@@ -57,8 +63,19 @@ class Carte
      */
     public function createCarte($nom, $description, $photo, $categorie)
     {
-        $stmt = $this->pdo->prepare('INSERT INTO cartes (nom, description, photo, categorie) VALUES (?, ?, ?, ?)');
-        return $stmt->execute([$nom, $description, $photo, $categorie]);
+        $this->validateCarte($nom, $description); 
+        try {
+            $stmt = $this->pdo->prepare('INSERT INTO cartes (nom, description, photo, categorie) VALUES (?, ?, ?, ?)');
+    
+            if (!$stmt) {
+                $errorInfo = $this->pdo->errorInfo(); // Récupérer les erreurs PDO
+                throw new Exception("Erreur lors de la préparation de la requête SQL : " . implode(" | ", $errorInfo));
+            }
+    
+            return $stmt->execute([$nom, $description, $photo, $categorie]);
+        } catch (PDOException $e) {
+            throw new Exception("Erreur SQL : " . $e->getMessage());
+        }
     }
 
     /**
@@ -73,10 +90,14 @@ class Carte
      */
     public function updateCarte($id, $nom, $description, $photo, $categorie)
     {
-        $stmt = $this->pdo->prepare('UPDATE cartes SET nom = ?, description = ?, photo = ?, categorie = ? WHERE id = ?');
-        return $stmt->execute([$nom, $description, $photo, $categorie, $id]);
+        $this->validateCarte($nom, $description); 
+        try {
+            $stmt = $this->pdo->prepare('UPDATE cartes SET nom = ?, description = ?, photo = ?, categorie = ? WHERE id = ?');
+            return $stmt->execute([$nom, $description, $photo, $categorie, $id]);
+        } catch (PDOException $e) {
+            throw new Exception("Erreur SQL lors de la mise à jour : " . $e->getMessage());
+        }
     }
-
     /**
      * Supprime une carte par son identifiant.
      * 
