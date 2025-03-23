@@ -26,10 +26,12 @@ class UtilisateursController {
         // Connexion réussie : on stocke bien le rôle
         $_SESSION['user_id'] = $utilisateur['id'];
         $_SESSION['pseudo'] = $utilisateur['pseudo'];
-        $_SESSION['role'] = $utilisateur['role']; // 🔥 Assure que le rôle est stocké
+        $_SESSION['role'] = $utilisateur['role']; // 
     
         header("Location: /loup-garou-crud/public/index.php");
+        
         exit();
+        
     }
     
 

@@ -149,4 +149,79 @@ class UtilisateurTest extends TestCase
         // Vérifier que le résultat est faux (l'utilisateur n'est pas admin)
         $this->assertFalse($resultat);
     }
+
+    // Test de la méthode getUtilisateurByPseudoOrEmail
+public function testGetUtilisateurByPseudoOrEmail()
+{
+    $pdo = $this->createMock(PDO::class);
+    $stmt = $this->createMock(PDOStatement::class);
+
+    $pdo->method('prepare')->willReturn($stmt);
+    $stmt->method('execute')->willReturn(true);
+    $stmt->method('fetch')->willReturn([
+        'id' => 1,
+        'pseudo' => 'TestUser',
+        'email' => 'test@example.com',
+    ]);
+
+    $utilisateur = new Utilisateur($pdo);
+    $result = $utilisateur->getUtilisateurByPseudoOrEmail('test@example.com');
+
+    $this->assertIsArray($result);
+    $this->assertEquals('TestUser', $result['pseudo']);
+}
+
+// Test de la méthode login
+public function testLogin()
+{
+    $pdo = $this->createMock(PDO::class);
+    $utilisateurMock = $this->getMockBuilder(Utilisateur::class)
+                            ->setConstructorArgs([$pdo])
+                            ->onlyMethods(['getUtilisateurByPseudoOrEmail'])
+                            ->getMock();
+
+    $hashedPassword = password_hash('secret', PASSWORD_DEFAULT);
+
+    $utilisateurMock->method('getUtilisateurByPseudoOrEmail')
+                    ->willReturn([
+                        'id' => 2,
+                        'pseudo' => 'LoginTest',
+                        'email' => 'login@example.com',
+                        'password' => $hashedPassword
+                    ]);
+
+    $result = $utilisateurMock->login('login@example.com', 'secret');
+
+    $this->assertIsArray($result);
+    $this->assertEquals('LoginTest', $result['pseudo']);
+}
+
+// Test de la méthode isAdmin
+public function testIsAdminReturnsTrue()
+{
+    $pdo = $this->createMock(PDO::class);
+    $stmt = $this->createMock(PDOStatement::class);
+
+    $pdo->method('prepare')->willReturn($stmt);
+    $stmt->method('execute')->willReturn(true);
+    $stmt->method('fetch')->willReturn(['role' => 'admin']);
+
+    $utilisateur = new Utilisateur($pdo);
+    $this->assertTrue($utilisateur->isAdmin(1));
+}
+
+// Test de la méthode emailExists
+public function testEmailExists()
+{
+    $pdo = $this->createMock(PDO::class);
+    $stmt = $this->createMock(PDOStatement::class);
+
+    $pdo->method('prepare')->willReturn($stmt);
+    $stmt->method('execute')->willReturn(true);
+    $stmt->method('fetchColumn')->willReturn(1);
+
+    $utilisateur = new Utilisateur($pdo);
+    $this->assertTrue($utilisateur->emailExists('test@example.com'));
+}
+
 }

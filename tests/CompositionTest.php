@@ -14,7 +14,8 @@ class CompositionTest extends TestCase
 
         $pdo->method('prepare')->willReturn($stmt);
         $stmt->method('execute')->willReturn(true);
-        $pdo->method('lastInsertId')->willReturn(1); // Simuler un ID inséré
+        $pdo->method('lastInsertId')->willReturn('1');
+
 
         // Créer une instance de Composition
         $composition = new Composition($pdo);
@@ -71,4 +72,63 @@ class CompositionTest extends TestCase
 
         $this->assertTrue($resultat);
     }
+
+    // Test de la méthode getCompositionById
+public function testGetCompositionById()
+{
+    $pdo = $this->createMock(PDO::class);
+    $stmt = $this->createMock(PDOStatement::class);
+
+    $pdo->method('prepare')->willReturn($stmt);
+    $stmt->method('execute')->willReturn(true);
+    $stmt->method('fetch')->willReturn([
+        'id' => 1,
+        'nom' => 'Compo Test',
+        'description' => 'Une composition test',
+        'nombre_joueurs' => 4
+    ]);
+
+    $composition = new Composition($pdo);
+    $result = $composition->getCompositionById(1);
+
+    $this->assertIsArray($result);
+    $this->assertEquals('Compo Test', $result['nom']);
+}
+
+// Test de la méthode updateComposition
+public function testUpdateComposition()
+{
+    $pdo = $this->createMock(PDO::class);
+    $stmt = $this->createMock(PDOStatement::class);
+
+    $pdo->method('prepare')->willReturn($stmt);
+    $stmt->method('execute')->willReturn(true);
+
+    $composition = new Composition($pdo);
+    $result = $composition->updateComposition(
+        1,
+        'Compo Modifiée',
+        'Description modifiée',
+        6,
+        [3, 4]
+    );
+
+    $this->assertTrue($result);
+}
+
+// Test de la méthode deleteComposition
+public function testDeleteComposition()
+{
+    $pdo = $this->createMock(PDO::class);
+    $stmt = $this->createMock(PDOStatement::class);
+
+    $pdo->method('prepare')->willReturn($stmt);
+    $stmt->method('execute')->willReturn(true);
+
+    $composition = new Composition($pdo);
+    $result = $composition->deleteComposition(1);
+
+    $this->assertTrue($result);
+}
+
 }

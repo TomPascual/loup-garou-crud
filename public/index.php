@@ -15,7 +15,7 @@ $action = $_GET['action'] ?? '';
 
 switch ($action) {
     case 'cartes':
-        $cartes = $cartesController->index();
+        $cartesController->index();
         break;
 
     case 'create_carte':
