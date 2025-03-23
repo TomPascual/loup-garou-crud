@@ -23,7 +23,7 @@ class CompositionTest extends TestCase
         $nom = 'Nouvelle Composition';
         $description = 'Description test';
         $nombre_joueurs = 5;
-        $cartes = [1, 2]; // Utiliser des IDs valides
+        $cartes = [1, 2]; 
         $utilisateur_id = 1;
 
         // Tester la méthode createComposition

@@ -43,7 +43,7 @@ class CartesController {
             // Vérification des extensions autorisées
             $extensionsAutorisees = ['jpg', 'png', 'pdf'];
     
-            // Vérification du type MIME pour éviter les fichiers malicieux
+            // Vérification du type MIME 
             $mimeTypesAutorises = ['image/jpeg', 'image/png', 'application/pdf'];
             $finfo = finfo_open(FILEINFO_MIME_TYPE);
             $mimeType = finfo_file($finfo, $photoTmpPath);
