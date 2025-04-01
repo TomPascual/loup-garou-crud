@@ -31,9 +31,10 @@ Ce projet est une application web permettant de gérer un ensemble de **composit
 - **Likes** : Les utilisateurs peuvent aimer des compositions.
 - **Filtrage des compositions** : Les utilisateurs peuvent filtrer les compositions par cartes spécifiques ou par nombre de joueurs.
 
-### Tests unitaires
-- Le dossier **tests/** contient des tests unitaires pour vérifier le bon fonctionnement des principales fonctionnalités (modèles comme `Composition` et `Utilisateur`).
-- Ces tests sont exécutables avec **PHPUnit**.
+### 🧪 Tests
+- Tests unitaires avec **PHPUnit**
+- Couverture des **modèles** : `Carte`, `Utilisateur`, `Composition`
+- Couverture des **contrôleurs** : `CartesController`, `UtilisateursController`, `CompositionsController`
 
 ## Installation
 
@@ -43,13 +44,14 @@ Ce projet est une application web permettant de gérer un ensemble de **composit
 - **MySQL** ou tout autre base de données compatible avec PDO
 - **Composer** (facultatif, mais recommandé)
 - **PHPUnit** pour exécuter les tests (si vous souhaitez les exécuter)
+- **Serveur local** type Apache ou WAMP
 
 ### Étapes d'installation
 
 1. **Clonez le dépôt :**
 
    ```bash
-   git clone https://github.com/itszerkiin/loup-garou-crud
+   git clone https://github.com/TomPascual/loup-garou-crud
    ```
 
 2. **Installez les dépendances avec Composer** (si utilisé) :
@@ -61,8 +63,7 @@ Ce projet est une application web permettant de gérer un ensemble de **composit
 3. **Configuration de la base de données :**
 
    - Créez une base de données MySQL.
-   - Importez le fichier SQL (`create_tables.sql`) situé dans le dossier `config/` pour créer les tables nécessaires.
-   - Modifiez le fichier de configuration de la base de données dans `/config/database.php` avec vos informations de connexion MySQL.
+   - Importez le fichier SQL (`database.sql`) situé dans le dossier `config/` pour créer les tables nécessaires.
 
 
 4. **Exécution des tests (facultatif)** :
@@ -99,9 +100,13 @@ loup-garou-crud/
 │   ├── index.php             # Point d'entrée principal de l'application
 │   ├── css/                  # Dossier contenant les fichiers CSS pour le style
 │   └── js/                   # Dossier contenant les fichiers JavaScript
-├── tests/
-│   ├── CompositionTest.php    # Tests unitaires pour le modèle Composition
-│   └── UtilisateurTest.php    # Tests unitaires pour le modèle Utilisateur
+├── tests/                    # Dossier contenant les fichiers Test
+│   └── CarteTest.php
+│   └── UtilisateurTest.php
+│   └── CompositionTest.php
+│   └── CartesControllerTest.php
+│   └── UtilisateursControllerTest.php
+│   └── CompositionsControllerTest.php
 ├── uploads/                  # Dossier pour stocker les images téléchargées
 ├── vendor/                   # Dépendances installées par Composer
 ├── views/
@@ -124,6 +129,9 @@ loup-garou-crud/
 
 1. Connectez-vous avec votre pseudo ou email et votre mot de passe.
 2. Une fois connecté, vous pouvez créer et interagir avec les compositions.
+   Deux utilisateurs de base pour tester :
+         -root / mdp: azerty
+         -user / mdp: azerty  
 
 ### Gestion des cartes (admin)
 
@@ -138,12 +146,43 @@ loup-garou-crud/
 
 ## Tests
 
-1. Les tests unitaires sont situés dans le dossier `tests/` et couvrent les principaux modèles (`Composition` et `Utilisateur`).
+1. Les tests unitaires sont situés dans le dossier `tests/` .
 2. Exécutez les tests avec PHPUnit en suivant les instructions d'installation dans la section "Installation".
 
+### Sécurité & Maintenance 
+
+## Sécurité :
+Mots de passe hashés avec password_hash
+
+Upload sécurisé avec move_uploaded_file
+
+## Outils utilisés 
+
+GLPI	Gestion de tickets, matériel, incidents IT 
+Wireshark	Analyse réseau si besoin d’inspecter le trafic ou les appels
+Fail2Ban	Sécurité SSH 
 
 
-## Auteurs
+##  Interface du site
+
+Voici quelques captures d’écran de l’interface du site Loup-Garou :
+
+###  Accueil
+![Accueil](docs/screens/home.png)
+
+###  Connexion
+![Connexion](docs/screens/login.png)
+
+###  Affichage des cartes
+![Gestion des cartes](docs/screens/cartes.png)
+
+###  Création d’une composition
+![Création compo](docs/screens/create_composition.png)
+
+###  Recherche d'une composition
+![Filtres](docs/screens/filtre.gif)
+
+## Auteur
 
 - **Pascual Tom**
 
