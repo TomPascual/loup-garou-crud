@@ -1,9 +1,9 @@
 <?php
 
 require_once __DIR__ . '/../config/database.php';
-require_once __DIR__ . '/../controllers/CartesController.php';
-require_once __DIR__ . '/../controllers/CompositionsController.php';
-require_once __DIR__ . '/../controllers/UtilisateursController.php';
+require_once __DIR__ . '/../controllers/cartesController.php';
+require_once __DIR__ . '/../controllers/compositionsController.php';
+require_once __DIR__ . '/../controllers/utilisateursController.php';
 require_once __DIR__ . '/../models/Carte.php'; 
 session_start();
 
