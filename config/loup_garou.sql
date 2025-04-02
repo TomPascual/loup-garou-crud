@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS `cartes` (
   `photo` varchar(255) DEFAULT NULL,
   `categorie` enum('villageois','neutre','loup') NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
