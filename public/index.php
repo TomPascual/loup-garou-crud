@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../config/Database.php';
+require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/../controllers/CartesController.php';
 require_once __DIR__ . '/../controllers/CompositionsController.php';
 require_once __DIR__ . '/../controllers/UtilisateursController.php';
