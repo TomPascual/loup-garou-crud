@@ -19,7 +19,7 @@ class UtilisateursController {
     
         if (!$utilisateur || !password_verify($password, $utilisateur['password'])) {
             $_SESSION['login_error'] = "Identifiants incorrects.";
-            header("Location: /loup-garou-crud/public/index.php?action=login");
+            header("Location: /index.php?action=login");
             exit();
         }
     
@@ -28,7 +28,7 @@ class UtilisateursController {
         $_SESSION['pseudo'] = $utilisateur['pseudo'];
         $_SESSION['role'] = $utilisateur['role']; // 
     
-        header("Location: /loup-garou-crud/public/index.php");
+        header("Location: /index.php");
         
         exit();
         
@@ -39,7 +39,7 @@ class UtilisateursController {
         if (empty($data['pseudo']) || empty($data['email']) || empty($data['password'])) {
             $_SESSION['register_error'] = "Tous les champs sont requis.";
             $_SESSION['register_data'] = $data;
-            header("Location: /loup-garou-crud/public/index.php?action=register");
+            header("Location: /index.php?action=register");
             exit();
         }
     
@@ -55,12 +55,12 @@ class UtilisateursController {
         if (!$success) {
             $_SESSION['register_error'] = "Cet email est déjà utilisé ou une erreur est survenue.";
             $_SESSION['register_data'] = $data;
-            header("Location: /loup-garou-crud/public/index.php?action=register");
+            header("Location: /index.php?action=register");
             exit();
         }
     
         $_SESSION['register_success'] = "Inscription réussie. Vous pouvez maintenant vous connecter.";
-        header("Location: /loup-garou-crud/public/index.php?action=login");
+        header("Location: /index.php?action=login");
         exit();
     }
     
@@ -68,7 +68,7 @@ class UtilisateursController {
 
     public function logout() {
         session_destroy();
-        header('Location: /loup-garou-crud/public/index.php');
+        header('Location: /index.php');
         exit;
     }
 }

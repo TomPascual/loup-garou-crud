@@ -44,7 +44,7 @@ class CompositionsController {
 
     public function create(array $data) {
         if (!isset($_SESSION['user_id'])) {
-            header('Location: /loup-garou-crud/public/index.php?action=login&error=connect_required');
+            header('Location: /index.php?action=login&error=connect_required');
             exit;
         }
 
@@ -62,7 +62,7 @@ class CompositionsController {
         );
 
         if ($result) {
-            header('Location: /loup-garou-crud/public/index.php');
+            header('Location: /index.php');
             exit;
         } else {
             die("Erreur : Échec de l'ajout de la composition.");
@@ -89,7 +89,7 @@ class CompositionsController {
         $result = $this->compositionModel->updateComposition($id, $nom, $description, $nombre_joueurs, $cartes);
     
         if ($result) {
-            header('Location: /loup-garou-crud/public/index.php');
+            header('Location: /index.php');
             exit;
         } else {
             die("Erreur : La modification de la composition a échoué.");
@@ -105,7 +105,7 @@ class CompositionsController {
         $result = $this->compositionModel->deleteComposition($id);
 
         if ($result) {
-            header('Location: /loup-garou-crud/public/index.php');
+            header('Location: /index.php');
             exit;
         } else {
             die("Erreur : Échec de la suppression de la composition.");

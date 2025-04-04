@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <title>Créer une Composition</title>
     <!-- Lien vers les fichiers CSS pour le style du header et de la page de création de composition -->
-    <link rel="stylesheet" href="/loup-garou-crud/public/css/header.css">
-    <link rel="stylesheet" href="/loup-garou-crud/public/css/composition.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/composition.css">
 </head>
 <body>
 <header>
@@ -27,7 +27,7 @@
 <h1>Créer une Nouvelle Composition</h1>
 
 <!-- Formulaire pour créer une nouvelle composition -->
-<form method="POST" action="/loup-garou-crud/public/index.php?action=create_composition">
+<form method="POST" action="/index.php?action=create_composition">
 
     <label for="nom">Nom de la Composition:</label>
     <!-- Champ pour le nom de la composition -->
@@ -120,6 +120,6 @@
 </form>
 
 <!-- Lien vers le fichier JavaScript pour gérer l'interaction avec les cartes -->
-<script src="/loup-garou-crud/public/js/composition.js"></script>
+<script src="js/composition.js"></script>
 </body>
 </html>

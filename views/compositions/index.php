@@ -192,7 +192,7 @@ if (!isset($compositionModel)) {
                     <?php if ((isset($_SESSION['role']) && $_SESSION['role'] === 'admin') || 
                             (isset($_SESSION['user_id']) && $compositionModel->isAuthor($_SESSION['user_id'], $composition['id']))): ?>
                         <div class="edit-delete-buttons">
-                            <a href="/?action=edit_composition&id=<?= $composition['id']; ?>" class="btn btn-edit">Modifier</a>
+                            <a href="?action=edit_composition&id=<?= $composition['id']; ?>" class="btn btn-edit">Modifier</a>
                             <a href="?action=delete_composition&id=<?= $composition['id']; ?>" class="btn btn-delete" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette composition ?');">Supprimer</a>
                         </div>
                     <?php endif; ?>
