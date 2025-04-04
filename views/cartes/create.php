@@ -4,16 +4,16 @@
     <meta charset="UTF-8">
     <title>Ajouter une Carte</title>
     <!-- Lien vers le fichier CSS pour le header -->
-    <link rel="stylesheet" href="/loup-garou-crud/public/css/header.css"> 
+    <link rel="stylesheet" href="css/header.css"> 
     <!-- Lien vers le fichier CSS principal pour styliser la page -->
-    <link rel="stylesheet" href="/loup-garou-crud/public/css/style.css"> 
+    <link rel="stylesheet" href="css/style.css"> 
 </head>
 <body>
     <header>
         <nav>
             <!-- Liens de navigation -->
-            <a href="/loup-garou-crud/public/index.php">Accueil</a> | 
-            <a href="/loup-garou-crud/public/index.php?action=cartes">Cartes</a> |
+            <a href="./">Accueil</a> | 
+            <a href="?action=cartes">Cartes</a> |
             <!-- Afficher les options de connexion/déconnexion selon l'état de la session -->
             <?php if (isset($_SESSION['user_id'])): ?>
                 <a href="?action=logout">Déconnexion (<?= htmlspecialchars($_SESSION['pseudo']) ?>)</a>
@@ -55,7 +55,7 @@
         </form>
 
         <!-- Lien de retour à la liste des cartes -->
-        <a href="/loup-garou-crud/public/index.php?action=cartes" class="btn-back">Retour à la liste des cartes</a> 
+        <a href="?action=cartes" class="btn-back">Retour à la liste des cartes</a> 
     </div>
 </body>
 </html>

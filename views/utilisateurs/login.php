@@ -15,7 +15,7 @@ unset($_SESSION['login_error']);
     <meta charset="UTF-8">
     <title>Connexion</title>
     <!-- Lien vers la feuille de style pour la page de connexion -->
-    <link rel="stylesheet" href="/loup-garou-crud/public/css/login.css">
+    <link rel="stylesheet" href="/css/login.css">
 </head>
 <body>
     <!-- Conteneur du formulaire de connexion -->
@@ -26,7 +26,7 @@ unset($_SESSION['login_error']);
         <?php endif; ?>
 
         <!-- Formulaire de connexion, utilisant la méthode POST pour envoyer les informations d'identification -->
-        <form method="POST" action="/loup-garou-crud/public/index.php?action=login">
+        <form method="POST" action="?action=login">
             <!-- Champ pour entrer le pseudo ou l'email -->
             <label for="identifiant">Pseudo ou Email:</label>
             <input type="text" name="identifiant" id="identifiant" class="form-input" required><br>

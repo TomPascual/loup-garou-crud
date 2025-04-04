@@ -15,16 +15,16 @@ if (!isset($compositionModel)) {
 <head>
     <meta charset="UTF-8">
     <title>Liste des Compositions</title>
-    <link rel="stylesheet" href="/loup-garou-crud/public/css/header.css">
-    <link rel="stylesheet" href="/loup-garou-crud/public/css/style.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/style.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="/loup-garou-crud/public/js/composition.js"></script>
+    <script src="js/composition.js"></script>
 </head>
 <body>
     <header>
         <nav>
-            <a href="/loup-garou-crud/public/index.php">Compositions</a> | 
-            <a href="/loup-garou-crud/public/index.php?action=cartes">Cartes</a> |
+            <a href="./">Compositions</a> | 
+            <a href="?action=cartes">Cartes</a> |
             <?php if (isset($_SESSION['user_id'])): ?>
                 <a href="?action=logout">Déconnexion (<?= htmlspecialchars($_SESSION['pseudo']) ?>)</a>
             <?php else: ?>
@@ -36,7 +36,7 @@ if (!isset($compositionModel)) {
 
     <h1>Liste des Compositions</h1>
     <?php if (isset($_SESSION['user_id'])): ?>
-        <a href="/loup-garou-crud/public/index.php?action=create_composition" class="btn">Nouvelle Composition</a>
+        <a href="?action=create_composition" class="btn">Nouvelle Composition</a>
 
 
 
@@ -89,8 +89,8 @@ if (!isset($compositionModel)) {
                     <?php if ((isset($_SESSION['role']) && $_SESSION['role'] === 'admin') || 
                             (isset($_SESSION['user_id']) && $compositionModel->isAuthor($_SESSION['user_id'], $composition['id']))): ?>
                         <div class="edit-delete-buttons">
-                            <a href="/loup-garou-crud/public/index.php?action=edit_composition&id=<?= $composition['id']; ?>" class="btn btn-edit">Modifier</a>
-                            <a href="/loup-garou-crud/public/index.php?action=delete_composition&id=<?= $composition['id']; ?>" class="btn btn-delete" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette composition ?');">Supprimer</a>
+                            <a href="?action=edit_composition&id=<?= $composition['id']; ?>" class="btn btn-edit">Modifier</a>
+                            <a href="?action=delete_composition&id=<?= $composition['id']; ?>" class="btn btn-delete" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette composition ?');">Supprimer</a>
                         </div>
                     <?php endif; ?>
 
@@ -181,7 +181,7 @@ if (!isset($compositionModel)) {
                                 $userLiked = $compositionModel->hasUserLiked($composition['id'], $_SESSION['user_id']); 
                             }
                             ?>
-                            <form method="POST" action="/loup-garou-crud/public/index.php?action=like" style="display: inline;">
+                            <form method="POST" action="?action=like" style="display: inline;">
                                 <input type="hidden" name="composition_id" value="<?= $composition['id'] ?>">
                                 <button type="submit" class="btn <?= $userLiked ? 'btn-liked' : 'btn-frame' ?>">
                                     <?= $userLiked ? 'Aimé' : 'J\'aime' ?>
@@ -192,8 +192,8 @@ if (!isset($compositionModel)) {
                     <?php if ((isset($_SESSION['role']) && $_SESSION['role'] === 'admin') || 
                             (isset($_SESSION['user_id']) && $compositionModel->isAuthor($_SESSION['user_id'], $composition['id']))): ?>
                         <div class="edit-delete-buttons">
-                            <a href="/loup-garou-crud/public/index.php?action=edit_composition&id=<?= $composition['id']; ?>" class="btn btn-edit">Modifier</a>
-                            <a href="/loup-garou-crud/public/index.php?action=delete_composition&id=<?= $composition['id']; ?>" class="btn btn-delete" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette composition ?');">Supprimer</a>
+                            <a href="/?action=edit_composition&id=<?= $composition['id']; ?>" class="btn btn-edit">Modifier</a>
+                            <a href="?action=delete_composition&id=<?= $composition['id']; ?>" class="btn btn-delete" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette composition ?');">Supprimer</a>
                         </div>
                     <?php endif; ?>
 

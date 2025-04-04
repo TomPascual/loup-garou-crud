@@ -6,17 +6,17 @@
     <meta charset="UTF-8">
     <title>Cartes - Loup-Garou</title>
     <!-- Lien vers le fichier CSS pour styliser le header -->
-    <link rel="stylesheet" href="/loup-garou-crud/public/css/header.css">
+    <link rel="stylesheet" href="css/header.css">
     <!-- Lien vers le fichier CSS pour styliser la liste des cartes -->
-    <link rel="stylesheet" href="/loup-garou-crud/public/css/cartes.css">
+    <link rel="stylesheet" href="css/cartes.css">
 </head>
 <body>
 
 <header>
     <nav>
         <!-- Liens de navigation -->
-        <a href="/loup-garou-crud/public/index.php">Compositions</a> | 
-        <a href="/loup-garou-crud/public/index.php?action=cartes">Cartes</a> |
+        <a href="./">Compositions</a> | 
+        <a href="?action=cartes">Cartes</a> |
         <!-- Afficher les options de connexion/déconnexion selon l'état de la session -->
         <?php if (isset($_SESSION['user_id'])): ?>
             <a href="?action=logout">Déconnexion (<?= htmlspecialchars($_SESSION['pseudo']) ?>)</a>
@@ -32,7 +32,7 @@
 <!-- Bouton d'administration pour ajouter une carte, visible uniquement pour les administrateurs -->
 <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
     <div class="admin-actions">
-        <a href="/loup-garou-crud/public/index.php?action=create_carte" class="btn">Ajouter une carte</a>
+        <a href="?action=create_carte" class="btn">Ajouter une carte</a>
     </div>
 <?php endif; ?>
 
@@ -51,8 +51,8 @@
                         <!-- Options de modification/suppression visibles uniquement pour les administrateurs -->
                         <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
                             <div class="admin-card-actions">
-                                <a href="/loup-garou-crud/public/index.php?action=edit_carte&id=<?= $carte['id']; ?>" class="btn btn-edit">Modifier</a>
-                                <a href="/loup-garou-crud/public/index.php?action=delete_carte&id=<?= $carte['id']; ?>" class="btn btn-delete" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette carte ?');">Supprimer</a>
+                                <a href="?action=edit_carte&id=<?= $carte['id']; ?>" class="btn btn-edit">Modifier</a>
+                                <a href="?action=delete_carte&id=<?= $carte['id']; ?>" class="btn btn-delete" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette carte ?');">Supprimer</a>
                             </div>
                         <?php endif; ?>
                     </div>
@@ -73,8 +73,8 @@
                         <!-- Options de modification/suppression visibles uniquement pour les administrateurs -->
                         <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
                             <div class="admin-card-actions">
-                                <a href="/loup-garou-crud/public/index.php?action=edit_carte&id=<?= $carte['id']; ?>" class="btn btn-edit">Modifier</a>
-                                <a href="/loup-garou-crud/public/index.php?action=delete_carte&id=<?= $carte['id']; ?>" class="btn btn-delete" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette carte ?');">Supprimer</a>
+                                <a href="?action=edit_carte&id=<?= $carte['id']; ?>" class="btn btn-edit">Modifier</a>
+                                <a href="?action=delete_carte&id=<?= $carte['id']; ?>" class="btn btn-delete" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette carte ?');">Supprimer</a>
                             </div>
                         <?php endif; ?>
                     </div>
@@ -95,8 +95,8 @@
                         <!-- Options de modification/suppression visibles uniquement pour les administrateurs -->
                         <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
                             <div class="admin-card-actions">
-                                <a href="/loup-garou-crud/public/index.php?action=edit_carte&id=<?= $carte['id']; ?>" class="btn btn-edit">Modifier</a>
-                                <a href="/loup-garou-crud/public/index.php?action=delete_carte&id=<?= $carte['id']; ?>" class="btn btn-delete" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette carte ?');">Supprimer</a>
+                                <a href="?action=edit_carte&id=<?= $carte['id']; ?>" class="btn btn-edit">Modifier</a>
+                                <a href="?action=delete_carte&id=<?= $carte['id']; ?>" class="btn btn-delete" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette carte ?');">Supprimer</a>
                             </div>
                         <?php endif; ?>
                     </div>
@@ -116,6 +116,6 @@
 <div id="close-button" style="display: none;">✖</div>
 
 <!-- Fichier JS pour gérer l'interactivité sur les cartes -->
-<script src="/loup-garou-crud/public/js/cartes.js"></script>
+<script src="js/cartes.js"></script>
 </body>
 </html>

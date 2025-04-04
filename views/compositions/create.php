@@ -11,8 +11,8 @@
 <header>
     <nav>
         <!-- Liens de navigation -->
-        <a href="/loup-garou-crud/public/index.php">Compositions</a> | 
-        <a href="/loup-garou-crud/public/index.php?action=cartes">Cartes</a> |
+        <a href="./">Compositions</a> | 
+        <a href="?action=cartes">Cartes</a> |
         <!-- Afficher les options de connexion/déconnexion selon l'état de la session -->
         <?php if (isset($_SESSION['user_id'])): ?>
             <a href="?action=logout">Déconnexion (<?= htmlspecialchars($_SESSION['pseudo']) ?>)</a>

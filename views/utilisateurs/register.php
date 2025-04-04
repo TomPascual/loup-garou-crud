@@ -14,7 +14,7 @@ unset($_SESSION['register_error'], $_SESSION['register_data']);
     <meta charset="UTF-8">
     <title>Inscription</title>
     <!-- Lien vers la feuille de style pour la page d'inscription -->
-    <link rel="stylesheet" href="/loup-garou-crud/public/css/login.css">
+    <link rel="stylesheet" href="css/login.css">
 </head>
 <body>
     <!-- Conteneur du formulaire d'inscription -->
@@ -25,7 +25,7 @@ unset($_SESSION['register_error'], $_SESSION['register_data']);
         <?php endif; ?>
 
         <!-- Formulaire d'inscription, utilisant la méthode POST pour envoyer les informations -->
-        <form method="POST" action="/loup-garou-crud/public/index.php?action=register">
+        <form method="POST" action="?action=register">
             <!-- Champ pour entrer le pseudo -->
             <label for="pseudo">Pseudo:</label>
             <input type="text" name="pseudo" id="pseudo" class="form-input" required><br>

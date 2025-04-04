@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Modifier une Composition</title>
-    <link rel="stylesheet" href="/loup-garou-crud/public/css/header.css">
-    <link rel="stylesheet" href="/loup-garou-crud/public/css/composition.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/composition.css">
 </head>
 <body>
 <header>
     <nav>
-        <a href="/loup-garou-crud/public/index.php">Compositions</a> | 
-        <a href="/loup-garou-crud/public/index.php?action=cartes">Cartes</a> |
+        <a href="./">Compositions</a> | 
+        <a href="?action=cartes">Cartes</a> |
         <?php if (isset($_SESSION['user_id'])): ?>
             <a href="?action=logout">Déconnexion (<?= htmlspecialchars($_SESSION['pseudo']) ?>)</a>
         <?php else: ?>
@@ -23,7 +23,7 @@
 <h1>Modifier la Composition</h1>
 
 <?php if (isset($composition) && isset($cartesDisponibles)): ?>
-    <form method="POST" action="/loup-garou-crud/public/index.php?action=edit_composition&id=<?= htmlspecialchars($composition['id']) ?>">
+    <form method="POST" action="?action=edit_composition&id=<?= htmlspecialchars($composition['id']) ?>">
         <label for="nom">Nom de la Composition:</label>
         <input type="text" name="nom" value="<?= htmlspecialchars($composition['nom']) ?>" required><br>
 
@@ -78,6 +78,6 @@
     <p>Impossible de charger la composition ou les cartes disponibles.</p>
 <?php endif; ?>
 
-<script src="/loup-garou-crud/public/js/composition.js"></script>
+<script src="js/composition.js"></script>
 </body>
 </html>
