@@ -38,15 +38,15 @@ class CartesController {
         if (isset($files['photo']) && $files['photo']['error'] == UPLOAD_ERR_OK) {
             $photoTmpPath = $files['photo']['tmp_name'];
             $photoName = basename($files['photo']['name']);
-            $photoDestinationPath = __DIR__ . '/../uploads/' . $photoName;
+            $photoDestinationPath = __DIR__ . '/../public/uploads/' . $photoName;
 
             // Créer le dossier 'uploads' s'il n'existe pas
-            if (!file_exists(__DIR__ . '/../uploads')) {
-                mkdir(__DIR__ . '/../uploads', 0777, true);
+            if (!file_exists(__DIR__ . '/../public/uploads')) {
+                mkdir(__DIR__ . '/../public/uploads', 0777, true);
             }
 
             if (move_uploaded_file($photoTmpPath, $photoDestinationPath)) {
-                $photoUrl = '/loup-garou-crud/uploads/' . $photoName;
+                $photoUrl = '/uploads/' . $photoName;
             } else {
                 throw new Exception("Erreur : Impossible de télécharger la photo.");
             }
@@ -56,7 +56,7 @@ class CartesController {
             // Appel à la méthode du modèle pour ajouter la carte
             $result = $this->carteModel->createCarte($data['nom'], $data['description'], $photoUrl, $data['categorie']);
             if ($result) {
-                header('Location: /loup-garou-crud/public/index.php?action=cartes');
+                header('Location: /index.php?action=cartes');
                 exit;
             }
         } catch (Exception $e) {
@@ -76,10 +76,10 @@ class CartesController {
         if (isset($files['photo']) && $files['photo']['error'] == UPLOAD_ERR_OK) {
             $photoTmpPath = $files['photo']['tmp_name'];
             $photoName = basename($files['photo']['name']);
-            $photoDestinationPath = __DIR__ . '/../uploads/' . $photoName;
+            $photoDestinationPath = __DIR__ . '/../public/uploads' . $photoName;
 
             if (move_uploaded_file($photoTmpPath, $photoDestinationPath)) {
-                $photoUrl = '/loup-garou-crud/uploads/' . $photoName;
+                $photoUrl = '/uploads/' . $photoName;
             }
         }
 
@@ -87,7 +87,7 @@ class CartesController {
             // Mise à jour de la carte
             $result = $this->carteModel->updateCarte($id, $data['nom'], $data['description'], $photoUrl, $data['categorie']);
             if ($result) {
-                header('Location: /loup-garou-crud/public/index.php?action=cartes');
+                header('Location: /index.php?action=cartes');
                 exit;
             }
         } catch (Exception $e) {
