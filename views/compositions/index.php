@@ -43,21 +43,31 @@ if (!isset($compositionModel)) {
     <?php endif; ?> 
 
     <section id="top-liked-compositions">
-        <h2>Les 5 compositions les plus aimées</h2>
-        <div class="compositions-container">
-            <?php if (!empty($topLikedCompositions)): ?>
-                <?php foreach ($topLikedCompositions as $composition): ?>
-                    <div class="composition uniform-size">
-                        <h2><?= htmlspecialchars($composition['nom']) ?> (<?= htmlspecialchars($composition['nombre_joueurs']) ?> joueurs)</h2>
-                        <p><?= htmlspecialchars($composition['description']) ?></p>
-                        <p><strong>Posté par :</strong> <?= isset($composition['utilisateur']) ? htmlspecialchars($composition['utilisateur']) : 'Inconnu' ?></p>
-                        <p>J'aime : <?= isset($composition['likes']) ? htmlspecialchars($composition['likes']) : 0 ?></p>
+    <h2>Les 5 compositions les plus aimées</h2>
+    <div class="compositions-container">
+        <?php if (!empty($topLikedCompositions)): ?>
+            <?php foreach ($topLikedCompositions as $composition): ?>
+                <div class="composition uniform-size">
+                    <h2><?= htmlspecialchars($composition['nom']) ?> (<?= htmlspecialchars($composition['nombre_joueurs']) ?> joueurs)</h2>
+                    <p><?= htmlspecialchars($composition['description']) ?></p>
+                    <p><strong>Posté par :</strong> <?= isset($composition['utilisateur']) ? htmlspecialchars($composition['utilisateur']) : 'Inconnu' ?></p>
+                    <p>J'aime : <?= isset($composition['likes']) ? htmlspecialchars($composition['likes']) : 0 ?></p>
 
-                        <div class="cartes-conteneur">
-                            <?php 
-                            $cartes = json_decode($composition['cartes'], true);
-                            foreach ($cartes as $carte_id => $quantity):
-                                if ($quantity > 0): 
+                    <div class="cartes-conteneur">
+                        <?php 
+                        $cartes = json_decode($composition['cartes'], true);
+                        $cartesAffichees = 0;
+                        $nbCartesMax = 5;
+                        $totalCartes = 0;
+                        $cartesRestantes = 0;
+
+                        foreach ($cartes as $q) {
+                            if ($q > 0) $totalCartes++;
+                        }
+
+                        foreach ($cartes as $carte_id => $quantity):
+                            if ($quantity > 0):
+                                if ($cartesAffichees < $nbCartesMax):
                                     if (isset($carteModel)) { 
                                         $carte = $carteModel->getCarteById($carte_id);
                                         if ($carte): ?>
@@ -67,25 +77,35 @@ if (!isset($compositionModel)) {
                                             </div>
                                         <?php endif; 
                                     }
+                                    $cartesAffichees++;
+                                else:
+                                    $cartesRestantes++;
                                 endif;
-                            endforeach; ?>
-                        </div>
-                        <div class="like-button-container">
-                            <?php
-                            // Vérifie que $compositionModel est bien défini
-                            $userLiked = false;
-                            if (isset($compositionModel) && isset($_SESSION['user_id'])) {
-                                $userLiked = $compositionModel->hasUserLiked($composition['id'], $_SESSION['user_id']); 
-                            }
-                            ?>
-                            <form method="POST" action="?action=like" style="display: inline;">
-                                <input type="hidden" name="composition_id" value="<?= $composition['id'] ?>">
-                                <button type="submit" class="btn <?= $userLiked ? 'btn-liked' : 'btn-frame' ?>">
-                                    <?= $userLiked ? 'Aimé' : 'J\'aime' ?>
-                                </button>
-                            </form>
-                        </div>
-                        <!-- Vérification des permissions de l'utilisateur -->
+                            endif;
+                        endforeach;
+
+                        if ($cartesRestantes > 0): ?>
+                            <div class="carte-item composition-carte extra-card">
+                                <div class="carte-image plus-indicator">+<?= $cartesRestantes ?></div>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+
+                    <div class="like-button-container">
+                        <?php
+                        $userLiked = false;
+                        if (isset($compositionModel) && isset($_SESSION['user_id'])) {
+                            $userLiked = $compositionModel->hasUserLiked($composition['id'], $_SESSION['user_id']); 
+                        }
+                        ?>
+                        <form method="POST" action="?action=like" style="display: inline;">
+                            <input type="hidden" name="composition_id" value="<?= $composition['id'] ?>">
+                            <button type="submit" class="btn <?= $userLiked ? 'btn-liked' : 'btn-frame' ?>">
+                                <?= $userLiked ? 'Aimé' : 'J\'aime' ?>
+                            </button>
+                        </form>
+                    </div>
+
                     <?php if ((isset($_SESSION['role']) && $_SESSION['role'] === 'admin') || 
                             (isset($_SESSION['user_id']) && $compositionModel->isAuthor($_SESSION['user_id'], $composition['id']))): ?>
                         <div class="edit-delete-buttons">
@@ -94,13 +114,14 @@ if (!isset($compositionModel)) {
                         </div>
                     <?php endif; ?>
 
-                    </div>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <p>Aucune composition disponible</p>
-            <?php endif; ?>
-        </div>
-    </section>
+                </div>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <p>Aucune composition disponible</p>
+        <?php endif; ?>
+    </div>
+</section>
+
 
     <div class="filters-container" style="display: flex; justify-content: space-between;">
         <section id="filter-by-cards">
@@ -156,21 +177,42 @@ if (!isset($compositionModel)) {
                         <p>J'aime : <?= isset($composition['likes']) ? htmlspecialchars($composition['likes']) : 0 ?></p>
 
                         <div class="cartes-conteneur">
-                            <?php 
-                            $cartes = json_decode($composition['cartes'], true);
-                            foreach ($cartes as $carte_id => $quantity):
-                                if ($quantity > 0): 
-                                    if (isset($carteModel)) { 
-                                        $carte = $carteModel->getCarteById($carte_id);
-                                        if ($carte): ?>
-                                            <div class="carte-item composition-carte" data-id="<?= htmlspecialchars($carte['id']); ?>">
-                                                <img src="<?= htmlspecialchars($carte['photo']) ?>" alt="<?= htmlspecialchars($carte['nom']) ?>" class="carte-image">
-                                                <div class="carte-quantity"><?= $quantity ?></div>
-                                            </div>
-                                        <?php endif; 
-                                    }
-                                endif;
-                            endforeach; ?>
+                        <?php 
+                                $cartes = json_decode($composition['cartes'], true);
+                                $cartesAffichees = 0;
+                                $nbCartesMax = 5;
+                                $totalCartes = 0;
+                                $cartesRestantes = 0;
+
+                                foreach ($cartes as $q) {
+                                    if ($q > 0) $totalCartes++;
+                                }
+
+                                foreach ($cartes as $carte_id => $quantity):
+                                    if ($quantity > 0):
+                                        if ($cartesAffichees < $nbCartesMax):
+                                            if (isset($carteModel)) { 
+                                                $carte = $carteModel->getCarteById($carte_id);
+                                                if ($carte): ?>
+                                                    <div class="carte-item composition-carte" data-id="<?= htmlspecialchars($carte['id']); ?>">
+                                                        <img src="<?= htmlspecialchars($carte['photo']) ?>" alt="<?= htmlspecialchars($carte['nom']) ?>" class="carte-image">
+                                                        <div class="carte-quantity"><?= $quantity ?></div>
+                                                    </div>
+                                                <?php endif; 
+                                            }
+                                            $cartesAffichees++;
+                                        else:
+                                            $cartesRestantes++;
+                                        endif;
+                                    endif;
+                                endforeach;
+
+                                if ($cartesRestantes > 0): ?>
+                                    <div class="carte-item composition-carte extra-card">
+                                        <div class="carte-image plus-indicator">+<?= $cartesRestantes ?></div>
+                                    </div>
+                            <?php endif; ?>
+
                         </div>
                         
                         <div class="like-button-container">
