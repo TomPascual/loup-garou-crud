@@ -78,7 +78,7 @@ if (!isset($compositionModel)) {
                                 $userLiked = $compositionModel->hasUserLiked($composition['id'], $_SESSION['user_id']); 
                             }
                             ?>
-                            <form method="POST" action="/loup-garou-crud/public/index.php?action=like" style="display: inline;">
+                            <form method="POST" action="?action=like" style="display: inline;">
                                 <input type="hidden" name="composition_id" value="<?= $composition['id'] ?>">
                                 <button type="submit" class="btn <?= $userLiked ? 'btn-liked' : 'btn-frame' ?>">
                                     <?= $userLiked ? 'Aimé' : 'J\'aime' ?>
