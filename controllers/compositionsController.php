@@ -127,20 +127,26 @@ class CompositionsController {
     }
     
 
-    public function delete(int $id) {
-        if ($_SESSION['role'] !== 'admin') {
+    public function delete(int $id): never {
+        
+        $isAdmin = isset($_SESSION['role']) && $_SESSION['role'] === 'admin';
+        $isAuthor = isset($_SESSION['user_id']) && 
+            $this->compositionModel->isAuthor($_SESSION['user_id'], $id);
+    
+        if (!$isAdmin && !$isAuthor) {
             die("Erreur : Accès interdit.");
         }
-
+    
         $result = $this->compositionModel->deleteComposition($id);
-
+    
         if ($result) {
             header('Location: /index.php');
             exit;
         } else {
-            die("Erreur : Échec de la suppression de la composition.");
+            exit("Erreur : Échec de la suppression de la composition.");
         }
     }
+    
 
     public function getCompositionById(int $id) {
         return $this->compositionModel->getCompositionById($id);
