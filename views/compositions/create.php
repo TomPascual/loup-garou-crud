@@ -31,11 +31,11 @@
 
     <label for="nom">Nom de la Composition:</label>
     <!-- Champ pour le nom de la composition -->
-    <input type="text" name="nom" required><br>
+    <input type="text" name="nom" required minlength="3" maxlength="30"><br>
 
     <label for="description">Description:</label>
     <!-- Champ texte pour la description de la composition -->
-    <textarea name="description" rows="5" cols="40" required></textarea><br>
+    <textarea name="description" rows="5" cols="40" required minlength="3" maxlength="500"></textarea>></textarea><br>
 
     <label for="nombre_joueurs">Nombre de Joueurs (Minimum : 5):</label>
     <!-- Sélecteur pour le nombre de joueurs, avec une valeur minimale de 5 -->

@@ -48,8 +48,38 @@ class CompositionsController {
             exit;
         }
 
-        if (empty($data['nom']) || empty($data['description']) || empty($data['nombre_joueurs']) || empty($data['cartes'])) {
-            die("Erreur : Tous les champs sont requis.");
+         
+        $nom = trim($data['nom'] ?? '');
+        $description = trim($data['description'] ?? '');
+        $nombre_joueurs = (int) ($data['nombre_joueurs'] ?? 0);
+        $cartes = $data['cartes'] ?? [];
+
+        $errors = [];
+
+
+        if (strlen($nom) < 3 || strlen($nom) > 30) {
+            $errors[] = "Le nom doit contenir entre 3 et 30 caractères.";
+        }
+
+        if (strlen($description) < 10 || strlen($description) > 500) {
+            $errors[] = "La description doit contenir entre 10 et 500 caractères.";
+        }
+
+        if ($nombre_joueurs < 5) {
+            $errors[] = "Le nombre de joueurs doit être d'au moins 5.";
+        }
+
+        $totalCartes = array_sum(array_map('intval', $cartes));
+        if ($totalCartes !== $nombre_joueurs) {
+            $errors[] = "Le nombre total de cartes sélectionnées ($totalCartes) doit être exactement égal au nombre de joueurs ($nombre_joueurs).";
+        }
+
+        if (!empty($errors)) {
+            
+            foreach ($errors as $error) {
+                echo "<p style='color:red;'>$error</p>";
+            }
+            return; 
         }
 
         $user_id = $_SESSION['user_id'];
