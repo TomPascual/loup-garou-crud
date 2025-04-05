@@ -15,7 +15,7 @@ unset($_SESSION['login_error']);
     <meta charset="UTF-8">
     <title>Connexion</title>
     <!-- Lien vers la feuille de style pour la page de connexion -->
-    <link rel="stylesheet" href="/css/login.css">
+    <link rel="stylesheet" href="css/login.css">
 </head>
 <body>
     <!-- Conteneur du formulaire de connexion -->

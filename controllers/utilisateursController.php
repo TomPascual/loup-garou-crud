@@ -43,14 +43,12 @@ class UtilisateursController {
             exit();
         }
     
-        // Hachage du mot de passe pour la sécurité
-        $hashedPassword = password_hash($data['password'], PASSWORD_DEFAULT);
     
         // Rôle par défaut "utilisateur"
         $role = 'utilisateur';
     
         // Enregistrement de l'utilisateur
-        $success = $this->utilisateurModel->registerUser($data['pseudo'], $data['email'], $hashedPassword, $role);
+        $success = $this->utilisateurModel->registerUser($data['pseudo'], $data['email'], $data['password'], $role);
     
         if (!$success) {
             $_SESSION['register_error'] = "Cet email est déjà utilisé ou une erreur est survenue.";
