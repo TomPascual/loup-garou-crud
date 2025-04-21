@@ -3,6 +3,9 @@
 
 https://loupgarou.tompascual.site:50281/
 
+## GLPI
+user/user
+
 ## Description
 
 Ce projet est une application web permettant de gérer un ensemble de **compositions** et **cartes** pour le jeu de société Loup-Garou. Les utilisateurs peuvent créer des comptes, se connecter, et interagir avec les cartes et compositions de différents rôles. Le projet inclut les fonctionnalités suivantes :
